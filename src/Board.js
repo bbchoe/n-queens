@@ -28,6 +28,10 @@
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
+    
+    getPiece: function(rowIndex, colIndex) {
+      return this.get(rowIndex)[colIndex];
+    },
 
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
       return colIndex - rowIndex;
@@ -139,9 +143,13 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorIndex) {
-      return this.hasConflict(this.getMajorDiagonalX(majorIndex)) || this.hasConflict(this.getMajorDiagonalY(majorIndex));
+      return this.hasConflict(this.getMajorDiagonalX(majorIndex));
     },
     
+    hasMajorDiagonalConflictAtY: function(majorIndex) {
+      return this.hasConflict(this.getMajorDiagonalY(majorIndex));
+    },
+        
     getMajorDiagonalX: function(colIndex) {
       var diagArray = [];
       var n = this.get('n');
@@ -168,7 +176,7 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return this.hasAnyConflict(this.hasMajorDiagonalConflictAt.bind(this));
+      return this.hasAnyConflict(this.hasMajorDiagonalConflictAt.bind(this)) || this.hasAnyConflict(this.hasMajorDiagonalConflictAtY.bind(this));
     },
 
 
@@ -224,3 +232,5 @@
   };
 
 }());
+
+

@@ -10,18 +10,19 @@
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
 // take a look at solversSpec.js to see what the tests are expecting
 
-
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
-
-
-window.findNRooksSolution = function(n) {
-  var newBoard = new Board ({ n : n });
+window.findNRooksSolution = function(n, newBoard) {
+  if (newBoard === undefined) {
+    var newBoard = new Board ({ n : n });
+  }
   for (var i = 0; i < n; i++) {
     for (var j = 0; j < n; j++ ) {
-      newBoard.togglePiece(i, j);
-      if (newBoard.hasRowConflictAt(i) || newBoard.hasColConflictAt(j)) {
+      if (newBoard.getPiece(i, j) === 0) {
         newBoard.togglePiece(i, j);
+        if (newBoard.hasRowConflictAt(i) || newBoard.hasColConflictAt(j)) {
+          newBoard.togglePiece(i, j);
+        }
       }
     }
   }
@@ -38,15 +39,31 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var resultArray = [];
-  var count = n;
-  function addToSolution(count, solution) {
-    for (var i = 0; i < n; i ++) {
-      for (var j = 0; j < n; j ++) {
-        
+  var count = n; // n is the size of rows or columns, essentially a side length; n*n = area, which is total number of spots left
+  //What is our base case? How will we stop this recursion after it has found all the solutions?
+  //The correct count is as follows [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
+  var x = 0;
+  var y = 0;
+  
+  var findASolution = (count, starterBoard) => {
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        if (starterBoard.getPiece(i, j) === 0) {
+          starterBoard.togglePiece(i, j);
+          if (starterBoard.hasAnyColConflicts() || starterBoard.hasAnyRowConflicts()) {
+            starterBoard.togglePiece(i, j);
+          }
+        }        
+        var aSolution = findASolution(count - 1, starterBoard);
+        if (!resultArray.contains(aSolution)) {
+          resultArray.push(aSolution);
+        }
       }
-    }
-    
-  }
+    }    
+  };
+  
+  
+
   
   
   var solutionCount = undefined; //fixme
@@ -70,3 +87,11 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+// Brian and Vlad test cases
+
+var board3 = new Board({n:3});
+board3.togglePiece(0,1);
+board3.togglePiece(1,2);
+var result = findNRooksSolution(3, board3);
+console.log('show result ' ,result);
