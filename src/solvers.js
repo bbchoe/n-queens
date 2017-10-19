@@ -42,31 +42,29 @@ window.countNRooksSolutions = function(n) {
   var count = n; // n is the size of rows or columns, essentially a side length; n*n = area, which is total number of spots left
   //What is our base case? How will we stop this recursion after it has found all the solutions?
   //The correct count is as follows [1, 1, 2, 6, 24, 120, 720, 5040, 40320]
-  var x = 0;
-  var y = 0;
-  
+
   var findASolution = (count, starterBoard) => {
-    for (var i = 0; i < n; i++) {
-      for (var j = 0; j < n; j++) {
-        if (starterBoard.getPiece(i, j) === 0) {
-          starterBoard.togglePiece(i, j);
-          if (starterBoard.hasAnyColConflicts() || starterBoard.hasAnyRowConflicts()) {
+    if (count === 1) {
+      var aSolution = findNRooksSolution(n, starterBoard);
+      if (!resultArray.contains(aSolution)) {
+        resultArray.push(aSolution);
+      }
+    } else if {
+      for (var i = 0; i < n; i++) {
+        for (var j = 0; j < n; j++) {
+          if (starterBoard.getPiece(i, j) === 0) {
             starterBoard.togglePiece(i, j);
+            if (starterBoard.hasAnyColConflicts() || starterBoard.hasAnyRowConflicts()) {
+              starterBoard.togglePiece(i, j);
+            }
           }
-        }        
-        var aSolution = findASolution(count - 1, starterBoard);
-        if (!resultArray.contains(aSolution)) {
-          resultArray.push(aSolution);
+          findASolution(count - 1, starterBoard);
         }
       }
-    }    
+    }
   };
-  
-  
 
-  
-  
-  var solutionCount = undefined; //fixme
+  var solutionCount = resultArray.length; //fixme
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
