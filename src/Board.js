@@ -139,27 +139,27 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorIndex) {
-      return this.hasConflict(this.getMajorDiagnolX(majorIndex)) || this.hasConflict(this.getMajorDiagnolY(majorIndex));
+      return this.hasConflict(this.getMajorDiagonalX(majorIndex)) || this.hasConflict(this.getMajorDiagonalY(majorIndex));
     },
     
-    getMajorDiagnolX: function(colIndex) {
+    getMajorDiagonalX: function(colIndex) {
       var diagArray = [];
       var n = this.get('n');
       var rowIndex = 0;
       
-      for (var i = colIndex; i <= n - colIndex; i++) {
+      for (var i = colIndex; i < nx; i++) {
         diagArray.push(this.get(rowIndex)[i]);
         rowIndex++;
       }
       return diagArray;
     },
     
-    getMajorDiagnolY: function(rowIndex) {
+    getMajorDiagonalY: function(rowIndex) {
       var diagArray = [];
       var n = this.get('n');
       var colIndex = 0;
       
-      for (var i = rowIndex; i <= n - rowIndex; i++) {
+      for (var i = rowIndex; i < n; i++) {
         diagArray.push(this.get(i)[colIndex]);
         colIndex++;
       }
