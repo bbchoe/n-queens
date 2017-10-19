@@ -49,7 +49,7 @@ window.countNRooksSolutions = function(n) {
       if (!resultArray.contains(aSolution)) {
         resultArray.push(aSolution);
       }
-    } else if {
+    } else if (count > 1) {
       for (var i = 0; i < n; i++) {
         for (var j = 0; j < n; j++) {
           if (starterBoard.getPiece(i, j) === 0) {
