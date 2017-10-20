@@ -178,6 +178,23 @@
     hasAnyMajorDiagonalConflicts: function() {
       return this.hasAnyConflict(this.hasMajorDiagonalConflictAt.bind(this)) || this.hasAnyConflict(this.hasMajorDiagonalConflictAtY.bind(this));
     },
+    //Will take an i and j value, and return a boolean true or false for a conflict at that location
+    hasQueenMajorDiagonalConflictAt: function(i, j) {
+      if (i >= j ) {
+        return this.hasMajorDiagonalConflictAt(i - j);
+      } else {
+        return this.hasMajorDiagonalConflictAtY(j - i);
+      }
+    },
+    
+    hasQueenMinorDiagonalConflictAt: function(i, j) {
+      if (i + j <= (n - 1)) {
+        //Change
+        return this.hasMinorDiagonalConflictAt(j + i);
+      } else {
+        return this.hasMinorDiagonalConflictAt(i + j - n + 1);
+      }
+    },
 
 
     getMinorDiagonalX: function(colIndex) {
@@ -209,8 +226,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(majorIndex) {
-      return this.hasConflict(this.getMinorDiagonalX(majorIndex)) || this.hasConflict(this.getMinorDiagonalY(majorIndex));
+    hasMinorDiagonalConflictAt: function(minorIndex) {
+      return this.hasConflict(this.getMinorDiagonalX(minorIndex)) || this.hasConflict(this.getMinorDiagonalY(minorIndex));
     },
 
     // test if any minor diagonals on this board contain conflicts
